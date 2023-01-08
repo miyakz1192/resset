@@ -5,7 +5,6 @@ import pandas as pd
 from PIL import Image
 from torch.utils.data import Dataset
 import pandas as pd
-import os
 import torch
 import torchvision.transforms as transforms
 from torchvision.models import resnet34
@@ -15,14 +14,22 @@ import torch.optim as optim
 from sklearn.metrics import classification_report
 from sklearn import preprocessing
 import datetime
+import time
+
+import sys
+sys.path.append("./dataset")  
+
+from gaa import *
 
 class GAAResNet34():
-    def __init__(self, dataset, train_ratio=0.7, batch_size=32, epochs=5):
+    def __init__(self, dataset, train_ratio=0.7, batch_size=32, epochs=5, verbose=True):
         self.model = resnet34(pretrained=True)
-        self.model.fc = nn.Linear(512,35)
+        #self.model.fc = nn.Linear(512,35)
+        self.model.fc = nn.Linear(512,1001)
         
         self.device = torch.device("cpu")
         self.model.cpu()
+        self.verbose = verbose
 
     def train_aux(self,epoch):
         total_loss = 0
@@ -31,6 +38,7 @@ class GAAResNet34():
         report_percent = 10
         report = int((len(self.train_loader.dataset) / self.batch_size) * float(report_percent) / 100.0)
         for batch_idx, (data, target) in enumerate(self.train_loader):
+            s_t = time.time()
             data, target = data.to(self.device), target.to(self.device)
             self.optimizer.zero_grad()
             output = self.model(data)
@@ -39,7 +47,10 @@ class GAAResNet34():
             total_size += data.size(0)
             loss.backward()
             self.optimizer.step()
-            #print("DEBUG: batch_idx=%d, len(data)=%d, batch_idx * len(data)=%d" % (batch_idx, len(data), batch_idx*len(data)))
+            e_t = time.time()
+
+            if self.verbose: 
+                print("DEBUG: time=%d, batch_idx=%d, len(data)=%d, batch_idx * len(data)=%d" % (int(e_t-s_t),batch_idx, len(data), batch_idx*len(data)))
             if batch_idx % report == 0:
                 now = datetime.datetime.now()
                 print('[{}] Train Epoch: {} [{}/{} ({:.0f}%)]\tAverage loss: {:.6f}'.format(
@@ -123,9 +134,10 @@ if __name__ == "__main__":
 
     import sys
     print("INFO main")
-    dataset = MyDataSet()
+    #dataset = MyDataSet()
+    dataset = GAADataSet()
 
-    gaa_resnet_34 = GAAResNet34(dataset)
+    gaa_resnet_34 = GAAResNet34(dataset, verbose=False)
     if sys.argv[1] == "train":
         gaa_resnet_34.train(dataset,epochs=2)
         gaa_resnet_34.save("test.pth")
