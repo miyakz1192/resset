@@ -58,6 +58,8 @@ class GAAResNet34():
                     epoch, batch_idx * len(data), len(self.train_loader.dataset),
                     100. * batch_idx * len(data) / len(self.train_loader.dataset), total_loss / total_size))
 
+            sys.stdout.flush()
+
     def setup_dataset_loader(self, dataset, batch_size, train_ratio):
         n_samples = len(dataset)
         train_size = int(len(dataset) * train_ratio)
@@ -139,7 +141,7 @@ if __name__ == "__main__":
 
     gaa_resnet_34 = GAAResNet34(dataset, verbose=False)
     if sys.argv[1] == "train":
-        gaa_resnet_34.train(dataset,epochs=2)
+        gaa_resnet_34.train(dataset,epochs=10)
         gaa_resnet_34.save("test.pth")
     elif sys.argv[1] == "test":
         gaa_resnet_34.load("test.pth")

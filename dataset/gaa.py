@@ -34,7 +34,7 @@ class GAADataSet:
         ja_char = [s for s in l if re.match('.*ja_char.*\.jpg', s)]
         closew  = [s for s in l if re.match('.*closew.*\.jpg' , s)]
 
-        return closew + ja_char[:100]
+        return closew + ja_char
 
     def process_ja_char(self, item):
         res = re.match(self.IMAGE_PATH+"ja_char_(?P<label>\d+)_(?P<number>\d+)", item)
