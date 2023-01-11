@@ -24,7 +24,7 @@ class GAADataSet:
         
         for path in l:
             self.images.append(path)
-            self.labels.append(self.process_ja_char(path) + self.process_close(path))
+            self.labels.append(self.process_ja_char(path) + self.process_close(path) + self.process_closew(path))
         
         self.le.fit(self.labels)
         self.labels_id = self.le.transform(self.labels)
@@ -46,12 +46,19 @@ class GAADataSet:
         return str(label)
 
 
-    def process_close(self, item):
+    def process_closew(self, item):
         res = re.match(self.IMAGE_PATH+"closew_(?P<number>\d+)", item)
         if res is None:
             return ""
 
         return "closew"
+
+    def process_close(self, item):
+        res = re.match(self.IMAGE_PATH+"close_(?P<number>\d+)", item)
+        if res is None:
+            return ""
+
+        return "close"
 
     def print_labels(self):
         for i in range(len(self.images)):
