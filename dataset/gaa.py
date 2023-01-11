@@ -53,6 +53,11 @@ class GAADataSet:
 
         return "closew"
 
+    def print_labels(self):
+        for i in range(len(self.images)):
+            print(self.images[i], self.labels_id[i])
+        
+
     def __len__(self):
         return len(self.images)
 

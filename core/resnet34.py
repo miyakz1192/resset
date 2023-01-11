@@ -20,6 +20,7 @@ import sys
 sys.path.append("./dataset")  
 
 from gaa import *
+from single import *
 
 class GAAResNet34():
     def __init__(self, train_ratio=0.7, batch_size=32, epochs=5, verbose=True):
@@ -104,6 +105,18 @@ class GAAResNet34():
 
         print(classification_report(Y, pred))
 
+    def single_predict(self,file_name):
+        im = SingleDataImageLoader()
+        data = im.load(file_name)
+        with torch.no_grad():
+            data = data.to(self.device)
+            output = self.model(data)
+
+        max_idx = int(output[0].argmax())
+        score   = int(output[0][max_idx])
+        return max_idx, score
+
+
 
 
 if __name__ == "__main__":
@@ -146,5 +159,10 @@ if __name__ == "__main__":
     elif sys.argv[1] == "test":
         gaa_resnet_34.load("test.pth")
         gaa_resnet_34.test(dataset)
+    elif sys.argv[1] == "single":
+        gaa_resnet_34.load("test.pth")
+        print(gaa_resnet_34.single_predict(sys.argv[2]))
+    elif sys.argv[1] == "labels":
+        dataset.print_labels()
     else:
         print("ERROR: invalid arg")
