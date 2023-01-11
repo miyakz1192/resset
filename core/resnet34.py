@@ -22,7 +22,7 @@ sys.path.append("./dataset")
 from gaa import *
 
 class GAAResNet34():
-    def __init__(self, dataset, train_ratio=0.7, batch_size=32, epochs=5, verbose=True):
+    def __init__(self, train_ratio=0.7, batch_size=32, epochs=5, verbose=True):
         self.model = resnet34(pretrained=True)
         #self.model.fc = nn.Linear(512,35)
         self.model.fc = nn.Linear(512,1001)
