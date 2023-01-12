@@ -18,7 +18,7 @@ class GAADataSet:
         self.images = []
         self.labels = []
 
-        l = self.cut_data(l)
+#        l = self.cut_data(l)
 
         self.le = preprocessing.LabelEncoder()
         
@@ -63,6 +63,9 @@ class GAADataSet:
     def print_labels(self):
         for i in range(len(self.images)):
             print(self.images[i], self.labels_id[i])
+
+    def classes(self):
+        return len(list(set(self.labels_id)))
         
 
     def __len__(self):

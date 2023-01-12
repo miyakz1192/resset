@@ -23,10 +23,10 @@ from gaa import *
 from single import *
 
 class GAAResNet34():
-    def __init__(self, train_ratio=0.7, batch_size=32, epochs=5, verbose=True):
+    def __init__(self, output_classes=None, train_ratio=0.7, batch_size=32, epochs=5, verbose=True):
         self.model = resnet34(pretrained=True)
         #self.model.fc = nn.Linear(512,35)
-        self.model.fc = nn.Linear(512,1001)
+        self.model.fc = nn.Linear(512,output_classes)
         
         self.device = torch.device("cpu")
         self.model.cpu()
@@ -152,7 +152,10 @@ if __name__ == "__main__":
     #dataset = MyDataSet()
     dataset = GAADataSet()
 
-    gaa_resnet_34 = GAAResNet34(dataset, verbose=False)
+    print("dataset size = %d" % (len(dataset)))
+    print("dataset classses = %d" % (dataset.classes()))
+
+    gaa_resnet_34 = GAAResNet34(output_classes=dataset.classes(), verbose=False)
     if sys.argv[1] == "train":
         gaa_resnet_34.train(dataset,epochs=10)
         gaa_resnet_34.save("test.pth")
