@@ -112,8 +112,10 @@ class GAAResNet34():
             data = data.to(self.device)
             output = self.model(data)
 
-        max_idx = int(output[0].argmax())
-        score   = int(output[0][max_idx])
+        probabilities = torch.nn.functional.softmax(output[0], dim=0)
+
+        max_idx = int(probabilities.argmax())
+        score   = float(probabilities[max_idx])
         return max_idx, score
 
 
