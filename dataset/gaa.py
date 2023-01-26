@@ -28,7 +28,11 @@ class GAADataSet:
         
         self.le.fit(self.labels)
         self.labels_id = self.le.transform(self.labels)
-        self.transform = transforms.Compose([transforms.Resize((224, 224)), transforms.ToTensor()])
+		#for train
+        self.transform = transforms.Compose([transforms.RandomResizedCrop(224),transforms.RandomHorizontalFlip(),transforms.ToTensor(),transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])])
+        
+        #old
+        #self.transform = transforms.Compose([transforms.Resize((224, 224)), transforms.ToTensor()])
 
     def cut_data(self,l):
         ja_char = [s for s in l if re.match('.*ja_char.*\.jpg', s)]
