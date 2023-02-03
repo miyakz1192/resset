@@ -60,7 +60,7 @@ class GAADataSet:
 
     def print_labels(self):
         for i in range(len(self.images)):
-            print(self.images[i], self.labels_id[i])
+            print(self.labels[i], self.labels_id[i])
 
     def classes(self):
         return len(list(set(self.labels_id)))

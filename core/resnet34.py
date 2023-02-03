@@ -159,7 +159,7 @@ if __name__ == "__main__":
 
     gaa_resnet_34 = GAAResNet34(output_classes=dataset.classes(), verbose=False)
     if sys.argv[1] == "train":
-        gaa_resnet_34.train(dataset,epochs=10)
+        gaa_resnet_34.train(dataset,epochs=5)
         gaa_resnet_34.save("test.pth")
     elif sys.argv[1] == "test":
         gaa_resnet_34.load("test.pth")
