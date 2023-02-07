@@ -160,12 +160,12 @@ if __name__ == "__main__":
     gaa_resnet_34 = GAAResNet34(output_classes=dataset.classes(), verbose=False)
     if sys.argv[1] == "train":
         gaa_resnet_34.train(dataset,epochs=5)
-        gaa_resnet_34.save("test.pth")
+        gaa_resnet_34.save("./weights/best_weight.pth")
     elif sys.argv[1] == "test":
-        gaa_resnet_34.load("test.pth")
+        gaa_resnet_34.load("./weights/best_weight.pth")
         gaa_resnet_34.test(dataset)
     elif sys.argv[1] == "single":
-        gaa_resnet_34.load("test.pth")
+        gaa_resnet_34.load("./weights/best_weight.pth")
         print(gaa_resnet_34.single_predict(sys.argv[2]))
     elif sys.argv[1] == "labels":
         dataset.print_labels()
