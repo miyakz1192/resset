@@ -64,7 +64,9 @@ class GAADataSet:
 
     def classes(self):
         return len(list(set(self.labels_id)))
-        
+
+    def label_ids(self):
+        return dict(zip(self.labels, self.labels_id))
 
     def __len__(self):
         return len(self.images)
